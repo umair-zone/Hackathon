@@ -1,0 +1,53 @@
+
+services:
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    # ports:
+    #   - "3000:80"  # Expose on a different port for direct access if needed
+    depends_on:
+      - backend
+
+  # Database Service
+  application_db:
+    image: postgres:17.6-alpine 
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  # Backend Service (update with your actual backend service details)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=application_db
+      - DB_PORT=5432
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  # Nginx Reverse Proxy
+  reverse-proxy:
+    build:
+      context: ./reverse-proxy
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+
+volumes:
+  db_data:
