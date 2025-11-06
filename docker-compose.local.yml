@@ -1,0 +1,21 @@
+services:
+
+  application_db :
+    image: postgres:17.6-alpine 
+    ports:
+      - "5432:5432"
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+
+    volumes:
+      - application_db_data:/var/lib/postgresql/data
+
+
+volumes:
+  application_db_data:
+
+    
+    
