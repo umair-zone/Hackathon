@@ -62,6 +62,9 @@ trigger: always_on
 - Follow composition pattern for complex components
 - Keep components small and focused
 
+### Device Compatibilty
+- All the component should be responsive and compatible with mobile devices
+
 ### Form Handling
 - Define form schemas with Zod
 - Use `useForm` with `zodResolver`
